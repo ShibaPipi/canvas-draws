@@ -1,14 +1,36 @@
-import React from 'react'
-import './App.css'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
-import { Main } from 'main'
+import { Tangram } from 'views/tangram'
+import { Countdown } from 'views/countdown'
 
-function App() {
+export default function App() {
   return (
     <div className="App">
-      <Main />
+      <Router>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/tangram">Tangram</Link>
+            </li>
+            <li>
+              <Link to="/countdown">Amazing Countdown</Link>
+            </li>
+          </ul>
+        </nav>
+
+        <Switch>
+          <Route path="/" exact={true} component={Home} />
+          <Route path="/tangram" component={Tangram} />
+          <Route path="/countdown" component={Countdown} />
+        </Switch>
+      </Router>
     </div>
   )
 }
 
-export default App
+function Home() {
+  return <h2>Home</h2>
+}
