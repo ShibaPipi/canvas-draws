@@ -1,12 +1,13 @@
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { FC, useEffect, useRef } from 'react'
 
-import { errMsg, WINDOW_HEIGHT, WINDOW_WIDTH } from 'utils/canvas'
+import { DIGIT_CLOCK_WINDOW_HEIGHT, errMsg, WINDOW_WIDTH } from 'utils/canvas'
 import { render as countdownRender } from 'utils/shapes/countdown'
 
+// todo: 组件、函数命名不对，不能是 countdown，而是 clock
 export const Countdown: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  const timer = useRef<number>()
+  const timer = useRef<number>(0)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -14,18 +15,19 @@ export const Countdown: FC = () => {
       return
     }
     canvas.width = WINDOW_WIDTH
-    canvas.height = WINDOW_HEIGHT
+    canvas.height = DIGIT_CLOCK_WINDOW_HEIGHT
     const canvasCtx = canvas.getContext('2d')
     if (!canvasCtx) {
       alert(errMsg)
       return
     }
 
+    let date = new Date()
     timer.current = window.requestAnimationFrame(() => {
-      countdownRender(canvasCtx, new Date())
+      countdownRender(timer, canvasCtx, date)
     })
 
-    return () => window.cancelAnimationFrame(timer.current as number)
+    return () => window.cancelAnimationFrame(timer.current)
   }, [canvasRef])
 
   return (
